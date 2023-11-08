@@ -65,15 +65,24 @@ def get_mazepa_worker_command(
     num_procs: int = 1,
     semaphores_spec: dict[SemaphoreType, int] | None = None,
 ):
+    if num_procs == 1 and semaphores_spec is None:
+        command = "mazepa.run_worker"
+        num_procs_line = ""
+        semaphores_line = ""
+    else:
+        command = "mazepa.run_worker_manager"
+        num_procs_line = f"num_procs: {num_procs}\n"
+        semaphores_line = f"semaphores_spec: {json.dumps(semaphores_spec)}\n"
+
     result = (
         """
     zetta -vv -l try run -s '{
-        "@type": "mazepa.run_worker_manager"
     """
+        + f'"@type": "{command}"\n'
         + f"task_queue: {json.dumps(task_queue_spec)}\n"
         + f"outcome_queue: {json.dumps(outcome_queue_spec)}\n"
-        + f"semaphores_spec: {json.dumps(semaphores_spec)}\n"
-        + f"num_procs: {num_procs}\n"
+        + num_procs_line
+        + semaphores_line
         + """
         sleep_sec: 5
     }'
