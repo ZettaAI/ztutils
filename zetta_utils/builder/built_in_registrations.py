@@ -7,7 +7,7 @@ import torch  # pylint: disable=unused-import
 from .build import BuilderPartial
 from .registry import register
 
-LAMBDA_STR_MAX_LENGTH: int = 80
+LAMBDA_STR_MAX_LENGTH: int = 400
 
 
 @register("lambda", False)

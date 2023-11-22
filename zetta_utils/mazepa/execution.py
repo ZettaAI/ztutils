@@ -210,7 +210,7 @@ def submit_ready_tasks(
     num_procs: int = 8,
 ):
     logger.debug("Pulling task outcomes...")
-    task_outcomes = outcome_queue.pull(max_num=100)
+    task_outcomes = outcome_queue.pull(max_num=1000)
 
     if len(task_outcomes) > 0:
         logger.debug(f"Received {len(task_outcomes)} completed task outcomes.")

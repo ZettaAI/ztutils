@@ -9,7 +9,7 @@ from typeguard import typechecked
 from zetta_utils import builder, log, tensor_ops
 from zetta_utils.geometry import BBoxStrider, IntVec3D, Vec3D
 
-from .. import IndexChunker, JointIndexDataProcessor
+from .. import DataProcessor, IndexChunker, JointIndexDataProcessor
 from . import VolumetricIndex
 
 logger = log.get_logger("zetta_utils")
@@ -59,6 +59,31 @@ class VolumetricIndexStartOffsetOverrider:
             end_coord=stop.vec,
             resolution=idx.resolution,
         )
+
+
+import cv2
+
+
+@builder.register("CLAHEProcessor")
+@attrs.mutable
+class CLAHEProcessor(DataProcessor):
+    clahe = cv2.createCLAHE(clipLimit=80, tileGridSize=(16, 16))
+
+    def __call__(self, __data):
+        if __data.dtype != torch.int8:
+            raise Exception
+        device = __data.device
+        shape = __data.shape
+        data = __data.squeeze()
+        zero_mask = data == 0
+        zeros = torch.zeros_like(data)
+        clahed_data = (
+            torch.tensor((self.clahe.apply((data + 128).byte().cpu().numpy())))
+            .type(torch.int8)
+            .to(device)
+            - 128
+        )
+        return torch.where(zero_mask, zeros, clahed_data).reshape(shape)
 
 
 @builder.register("DataResolutionInterpolator")

@@ -1,0 +1,29 @@
+"@type":                "mazepa.execute_on_gcp_with_sqs"
+worker_cluster_region:  "us-east1"
+worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-3"
+worker_cluster_project: "zetta-research"
+worker_cluster_name:    "zutils-x3"
+worker_replicas:        500
+local_test:             false
+debug:                  false
+target: {
+	"@type":    "compute_rough_montage_offsets"
+	path:       "~/stage_positions.csv"
+	bucket:     "gs://ng_scratch_ranl_7/test_voxa/tiles/2022.10.01_Sample3_tilt-0/s000.01-2022.10.02-20.37.54/"
+	exp_offset: 4672
+	crop:       192
+	ds_factor:  24
+	max_disp:   12
+	//z_start:      0
+	//z_stop:       5000
+	z_start: 0
+	z_stop:  3080
+}
+num_procs: 2
+semaphores_spec: {
+	"read":  2
+	"cpu":   2
+	"cuda":  1
+	"write": 2
+}
+do_dryrun_estimation: false

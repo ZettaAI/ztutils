@@ -1,6 +1,6 @@
 from . import traceback_supress
 
-from . import common, convert, mask, transform
+from . import common, convert, mask, multitensor, transform
 from .common import (
     InterpolationMode,
     compare,
