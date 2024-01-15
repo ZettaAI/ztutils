@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List, Literal, Optional, Sequence, Tuple
 
 import attrs
+import cv2
 import torch
 from typeguard import typechecked
 
@@ -61,17 +62,14 @@ class VolumetricIndexStartOffsetOverrider:
         )
 
 
-import cv2
-
-
 @builder.register("CLAHEProcessor")
 @attrs.mutable
-class CLAHEProcessor(DataProcessor):
+class CLAHEProcessor(DataProcessor):  # pragma: no cover
     clahe = cv2.createCLAHE(clipLimit=80, tileGridSize=(16, 16))
 
     def __call__(self, __data):
-        if __data.dtype != torch.int8:
-            raise Exception
+        if not __data.dtype == torch.int8:
+            raise NotImplementedError("CLAHEProcessor is only supported for (signed) Int8 layers.")
         device = __data.device
         shape = __data.shape
         data = __data.squeeze()

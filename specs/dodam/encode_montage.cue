@@ -1,7 +1,6 @@
 		//#IMG_PATH_BASE: "gs://zetta-research-dodam/dacey-montaging-research/prototype_7936_7040"
 #IMG_PATH_BASE: "gs://dacey-human-retina-001-montaging/elastic_rough_aligned_128importcrop_64crop_8x64_uniform_final"
 
-
 //#IMG_PATH_BASE: "gs://dacey-human-retina-001-montaging/test_tiles_8192full_384crop_6912offset"
 #IMG_RES: [5, 5, 50]
 
