@@ -42,7 +42,7 @@ def skip_on_empty_datas(fn: OpT) -> OpT:
 
 @builder.register("compute_pixel_error")
 @skip_on_empty_datas
-def compute_pixel_error(data1: Tensor, data2: Tensor, erosion: int = 5, **kwargs) -> Tensor:
+def compute_pixel_error(data1: Tensor, data2: Tensor, erosion: int = 3, **kwargs) -> Tensor:
     """
     Returns the symmetric pixel difference of two tensors in the area
     where two tensors overlap after erosion to exclude edge artifacts.
@@ -64,7 +64,7 @@ def compute_pixel_error(data1: Tensor, data2: Tensor, erosion: int = 5, **kwargs
 
 @builder.register("erode_combine")
 @skip_on_empty_datas
-def erode_combine(data1: Tensor, data2: Tensor, erosion: int = 5, **kwargs) -> Tensor:
+def erode_combine(data1: Tensor, data2: Tensor, erosion: int = 3, **kwargs) -> Tensor:
     """
     Combines two tensors by taking values from each one where they do not overlap,
     and averaging the two where they do. The overlap is determined after erosion

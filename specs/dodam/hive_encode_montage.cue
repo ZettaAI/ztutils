@@ -1,12 +1,12 @@
-#IMG_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_3"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_8"
+#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_8"
+#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_8"
 
 #IMG_RES: [1, 1, 1]
 
 #IMG_SIZE: [786432, 262144, 1]
 
 #MODELS: #GENERAL_ENC_MODELS
-
-#DST_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc"
 
 #OFFSETS: ["(0,0)", "(0,1)", "(1,0)", "(1,1)"]
 
@@ -19,7 +19,7 @@
 	resolution: [1, 1, 1]
 }
 
-#XY_ENC_RES: [8, 16, 32, 64, 128, 256]
+#XY_ENC_RES: [8, 16, 32, 64, 128, 256, 512]
 
 #PROCESS_CROP_PAD: [16, 16, 0] // 16 pix was okay for 1um model
 
@@ -48,7 +48,7 @@ if #TEST_LOCAL {
 #GCP_FLOW: {
 	"@type":               "mazepa.execute_on_gcp_with_sqs"
 	worker_cluster_region: "us-east1"
-	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-3"
+	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-5"
 	worker_resources: {
 		memory:           "18560Mi" // sized for n1-highmem-4
 		"nvidia.com/gpu": "1"
@@ -97,7 +97,7 @@ if #TEST_LOCAL {
 	"@type": "build_subchunkable_apply_flow"
 	bbox:    _
 	//level_intermediaries_dirs: [null, "file://."]
-	level_intermediaries_dirs: [null, "file://."]
+	level_intermediaries_dirs: [#INTERMEDIARY_PATH, "file://."]
 	// skip_intermediaries: true
 	op: {
 		"@type": "VolumetricCallableOperation"
@@ -124,7 +124,7 @@ if #TEST_LOCAL {
 
 #CNS_ENC_MODELS: {
 	// Adapted from https://github.com/ZettaAI/zetta_utils/blob/nkem/zfish-enc/specs/nico/inference/cns/0_encoding_cns/CNS_encoding_pyramid.cue#L47-L88
-	"20": {
+	"10": {
 		path: "gs://zetta-research-nico/training_artifacts/base_encodings/gamma_low0.75_high1.5_prob1.0_tile_0.0_0.2_lr0.00002_post1.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [1, 1, 1] // 0 3-3: 32-32
 		process_chunk_sizes: [[8192, 8192, 8], [4096, 4096, 1]]
@@ -196,6 +196,11 @@ if #TEST_LOCAL {
 		path: "gs://zetta-research-nico/training_artifacts/general_coarsener_loss/1.0.0_M3_M8_C1_lr0.0002_locality1.0_similarity0.0_l10.0-0.12_N1x4/last.ckpt.model.spec.json"
 		res_change_mult: [32, 32, 1]
 		process_chunk_sizes: [[256, 256, 1], [64, 64, 1]]
+	}
+	"512": {
+		path: "gs://zetta-research-nico/training_artifacts/general_coarsener_loss/1.0.2_M4_M9_C1_lr0.0002_locality1.0_similarity0.0_l10.0-0.12_N1x4/last.ckpt.model.spec.json"
+		res_change_mult: [32, 32, 1]
+		process_chunk_sizes: [[128, 128, 1], [32, 32, 1]]
 	}
 }
 

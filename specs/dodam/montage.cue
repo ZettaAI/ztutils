@@ -26,12 +26,12 @@ import "math"
 
 #IMG_SIZE: [65536, 65536, 16000]
 
-#FOLDER: "gs://dacey-human-retina-001-montaging/montage_prod_384croprender_128cropenc_final"
+#FOLDER: "gs://dacey-human-retina-001-montaging/montage_prod_384croprender_128cropenc_sanity"
 
 #SKIP_ENCODE: true
 #SKIP_MISD:   true
 #TEST_SMALL:  true
-#TEST_LOCAL:  false
+#TEST_LOCAL:  true
 
 #CLUSTER_NUM_WORKERS: 1000
 
