@@ -77,6 +77,16 @@ def are_dir_trees_equal(dir1, dir2):
     for common_dir in dirs_cmp.common_dirs:
         new_dir1 = os.path.join(dir1, common_dir)
         new_dir2 = os.path.join(dir2, common_dir)
+        from cloudvolume import CloudVolume
+        cv1 = CloudVolume("file://"+dir1, mip = [128, 128, 40])
+        cv2 = CloudVolume("file://"+dir2, mip = [128, 128, 40])
+        c1 = cv1[2048:3072, 2048:3072, 2000:2001]
+        c2 = cv2[2048:3072, 2048:3072, 2000:2001]
+        print(dir1)
+        import torch, numpy
+        import matplotlib.pyplot as plt
+        plt.imshow((c1).squeeze())
+        plt.show()
         if not are_dir_trees_equal(new_dir1, new_dir2):
             return False
     return True
@@ -89,36 +99,7 @@ def are_dir_trees_equal(dir1, dir2):
 @pytest.mark.parametrize(
     "cue_name",
     [
-        "test_uint8_copy_bbox",
-        "test_uint8_copy_no_op_kwargs",
-        "test_uint8_copy_coords",
-        "test_uint8_copy_fn_semaphores",
-        "test_uint8_copy_expand_bbox_resolution",
-        "test_uint8_copy_expand_bbox_processing",
-        "test_uint8_copy_expand_bbox_backend",
-        "test_uint8_copy_expand_bbox_resolution_backend_processing_do_nothing",
-        "test_uint8_copy_shrink_processing_chunk",
-        "test_uint8_copy_op",
-        "test_uint8_copy_auto_divisibility",
-        "test_uint8_copy_skip_intermediaries",
-        "test_uint8_copy_dont_skip_intermediaries",
-        "test_uint8_copy_multilevel_no_checkerboard",
-        "test_uint8_copy_multilevel_checkerboard",
-        "test_uint8_copy_multilevel_checkerboard_cache_up_to_l0",
-        "test_uint8_copy_blend",
-        "test_uint8_copy_crop",
-        "test_uint8_copy_top_level_checkerboard",
-        "test_uint8_copy_writeproc",
-        "test_uint8_copy_writeproc_multilevel_no_checkerboard",
         "test_uint8_copy_writeproc_multilevel_checkerboard",
-        "test_float32_copy",
-        "test_float32_copy_multilevel_no_checkerboard",
-        "test_float32_copy_multilevel_checkerboard",
-        "test_float32_copy_blend",
-        "test_float32_copy_crop",
-        "test_float32_copy_writeproc_multilevel_no_checkerboard",
-        "test_float32_copy_writeproc_multilevel_checkerboard",
-        "test_float32_copy_writeproc_multilevel_checkerboard_parallel",
     ],
 )
 def test_subchunkable(cue_name, clear_temp_dir_and_info_cache):

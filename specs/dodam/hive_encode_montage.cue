@@ -1,6 +1,6 @@
-#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_8"
-#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_8"
-#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_8"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_22"
+#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_22"
+#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_22"
 
 #IMG_RES: [1, 1, 1]
 

@@ -1,6 +1,6 @@
 "@type":                "mazepa.execute_on_gcp_with_sqs"
 worker_cluster_region:  "us-east1"
-worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-13"
+worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-20"
 worker_cluster_project: "zetta-research"
 worker_cluster_name:    "zutils-x3"
 worker_replicas:        500
@@ -15,8 +15,8 @@ target: {
 	exp_offset: 4672
 	crop:       0
 	aspect_ratio_limits: [1.5, 2.5, 4, 10]
-	ds_factor: 4
-	max_disp:  128
+	ds_factor: 2
+	max_disp:  256
 	//         max_disp_lobster: 256
 	//         max_disp_crab:    64
 	//z_start:      0
@@ -39,8 +39,9 @@ semaphores_spec: {
 	"cuda":  1
 	"write": 2
 }
-//worker_resources: {
-// memory:           "18560Mi" // sized for n1-highmem-4
-// "nvidia.com/gpu": "1"
-//}
+worker_resources: {
+	memory: "18560Mi" // sized for n1-highmem-4
+
+	// "nvidia.com/gpu": "1"
+}
 do_dryrun_estimation: false

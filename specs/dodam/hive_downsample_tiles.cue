@@ -1,6 +1,6 @@
 //#BASE_FOLDER: "gs://dacey-human-retina-001-montaging/test_tiles_8192full_64crop_6912offset"
 
-#BASE_FOLDER: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_14"
+#BASE_FOLDER: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_23"
 
 #BBOX: {
 	"@type": "BBox3D.from_coords"
