@@ -1,22 +1,26 @@
 "@type":                "mazepa.execute_on_gcp_with_sqs"
 worker_cluster_region:  "us-east1"
-worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-20"
+worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-23"
 worker_cluster_project: "zetta-research"
 worker_cluster_name:    "zutils-x3"
-worker_replicas:        500
+worker_replicas:        2000
 local_test:             false
 debug:                  false
 //local_test: true
 //debug:      true
 target: {
-	"@type":    "compute_rough_montage_offsets"
-	path:       "~/stage_positions.csv"
-	bucket:     "gs://ng_scratch_ranl_7/test_voxa/tiles/2022.10.01_Sample3_tilt-0/s000.01-2022.10.02-20.37.54/"
-	exp_offset: 4672
-	crop:       0
-	aspect_ratio_limits: [1.5, 2.5, 4, 10]
-	ds_factor: 2
-	max_disp:  256
+	"@type":          "compute_rough_montage_offsets"
+	path:             "~/stage_positions.csv"
+	bucket:           "gs://ng_scratch_ranl_7/test_voxa/tiles/2022.10.01_Sample3_tilt-0/s000.01-2022.10.02-20.37.54/"
+	exp_offset:       4672
+	crop:             0
+	patch_size_limit: 512
+	ds_factor:        1
+	max_disp:         420
+	//ds_factor: 2
+	//max_disp:  256
+	// ds_factor: 8
+	// max_disp:  64
 	//         max_disp_lobster: 256
 	//         max_disp_crab:    64
 	//z_start:      0

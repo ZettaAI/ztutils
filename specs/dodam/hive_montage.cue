@@ -12,8 +12,8 @@ import ( "math"
 #ENCODED_PATH10: "\(#ENCODED_PATH_BASE)/(1,0)"
 #ENCODED_PATH11: "\(#ENCODED_PATH_BASE)/(1,1)"
 
-#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_22"
-#ENCODED_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_22"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_24"
+#ENCODED_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_24"
 
 //#IMG_PATH_BASE: "gs://dacey-human-retina-001-montaging/rough_aligned_final"
 #IMG_PATH00: "\(#IMG_PATH_BASE)/(0,0)"
@@ -25,7 +25,7 @@ import ( "math"
 
 #IMG_SIZE: [786432, 262144, 1]
 
-#FOLDER: "gs://hive-tomography/pilot11-montage/exp22"
+#FOLDER: "gs://hive-tomography/pilot11-montage/exp24c"
 
 #SKIP_ENCODE: true
 #SKIP_MISD:   true
@@ -69,8 +69,8 @@ import ( "math"
 
 //#ENCODED_WARP_RES: [20, 20, #IMG_RES[2]]
 #ENCODED_WARP_RES: [8, 8, #IMG_RES[2]]
-#LOWEST_RES: [256, 256, #IMG_RES[2]]
-#IMG_WARP_RES: [2, 2, #IMG_RES[2]]
+#LOWEST_RES: [128, 128, #IMG_RES[2]]
+#IMG_WARP_RES: [4, 4, #IMG_RES[2]]
 #ERROR_RES: [8, 8, #IMG_RES[2]]
 
 #NUM_ENCODED_WARP_MIPS: math.Log2(#LOWEST_RES[0] / #ENCODED_WARP_RES[0])
@@ -402,13 +402,13 @@ import ( "math"
 }
 
 #STAGES: [
+	// #CF_FINETUNER_STAGE_TMPL & {
+	//  fn: sm:       500
+	//  fn: num_iter: #NUM_ITER
+	//  dst_resolution: [256, 256, #IMG_RES[2]]
+	// },
 	#CF_FINETUNER_STAGE_TMPL & {
-		fn: sm:       2000
-		fn: num_iter: #NUM_ITER
-		dst_resolution: [256, 256, #IMG_RES[2]]
-	},
-	#CF_FINETUNER_STAGE_TMPL & {
-		fn: sm:       1000
+		fn: sm:       500
 		fn: num_iter: #NUM_ITER
 		dst_resolution: [128, 128, #IMG_RES[2]]
 	},
@@ -449,9 +449,9 @@ import ( "math"
 		"@mode":        "partial"
 		tile_size:      int | *15
 		tile_step:      int | *5
-		min_overlap_px: int | *220
+		min_overlap_px: int | *200
 		max_disp:       int | *3
-		r_delta:        int | *1.4
+		r_delta:        int | *1.2
 	}
 }
 
@@ -482,7 +482,7 @@ import ( "math"
 		"@type": "WarpOperation"
 		mode:    _
 	}
-	processing_chunk_sizes: [[1024 * 2, 1024 * 2, 1], [1024 * 1, 1024 * 1, 1]]
+	processing_chunk_sizes: [[1024 * 4, 1024 * 4, 1], [1024 * 2, 1024 * 2, 1]]
 	processing_crop_pads: [[0, 0, 0], [256, 256, 0]]
 	skip_intermediaries: true
 	bbox:                _

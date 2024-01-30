@@ -1,12 +1,13 @@
-#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_22"
-#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_22"
-#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_22"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_26"
+#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_cns_enc_26"
+#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_cns_enc_26"
 
 #IMG_RES: [1, 1, 1]
 
 #IMG_SIZE: [786432, 262144, 1]
 
-#MODELS: #GENERAL_ENC_MODELS
+//#MODELS: #GENERAL_ENC_MODELS
+#MODELS: #CNS_ENC_MODELS
 
 #OFFSETS: ["(0,0)", "(0,1)", "(1,0)", "(1,1)"]
 
@@ -48,7 +49,7 @@ if #TEST_LOCAL {
 #GCP_FLOW: {
 	"@type":               "mazepa.execute_on_gcp_with_sqs"
 	worker_cluster_region: "us-east1"
-	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-5"
+	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-20"
 	worker_resources: {
 		memory:           "18560Mi" // sized for n1-highmem-4
 		"nvidia.com/gpu": "1"
@@ -124,45 +125,40 @@ if #TEST_LOCAL {
 
 #CNS_ENC_MODELS: {
 	// Adapted from https://github.com/ZettaAI/zetta_utils/blob/nkem/zfish-enc/specs/nico/inference/cns/0_encoding_cns/CNS_encoding_pyramid.cue#L47-L88
-	"10": {
+	"8": {
 		path: "gs://zetta-research-nico/training_artifacts/base_encodings/gamma_low0.75_high1.5_prob1.0_tile_0.0_0.2_lr0.00002_post1.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [1, 1, 1] // 0 3-3: 32-32
-		process_chunk_sizes: [[8192, 8192, 8], [4096, 4096, 1]]
+		process_chunk_sizes: [[2048, 2048, 1], [1024, 1024, 1]]
 	}
-	"40": {
-		path: "gs://zetta-research-nico/training_artifacts/base_encodings/gamma_low0.75_high1.5_prob1.0_tile_0.0_0.2_lr0.00002_post1.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
-		res_change_mult: [1, 1, 1] // 0 3-3: 32-32
-		process_chunk_sizes: [[4096, 4096, 6], [4096, 4096, 1]]
-	}
-	"80": {
+	"16": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/3_M3_M4_conv1_unet3_lr0.0001_equi0.5_post1.6_fmt0.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [2, 2, 1] // 1 3-4: 32-64
-		process_chunk_sizes: [[2048, 2048, 4], [2048, 2048, 1]]
+		process_chunk_sizes: [[1024, 1024, 1], [512, 512, 1]]
 	}
-	"160": {
+	"32": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/3_M3_M5_conv2_unet2_lr0.0001_equi0.5_post1.4_fmt0.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [4, 4, 1] // 2 3-5: 32-128
-		process_chunk_sizes: [[1024, 1024, 4], [1024, 1024, 1]]
+		process_chunk_sizes: [[1024, 1024, 1], [512, 512, 1]]
 	}
-	"320": {
+	"64": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/4_M3_M6_conv3_unet1_lr0.0001_equi0.5_post1.1_fmt0.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [8, 8, 1] // 3 3-6: 32-256
-		process_chunk_sizes: [[512, 512, 4], [512, 512, 1]]
+		process_chunk_sizes: [[512, 512, 1], [256, 256, 1]]
 	}
-	"640": {
+	"128": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/5_M3_M7_conv4_lr0.0001_equi0.5_post1.03_fmt0.8_cns_all/epoch=0-step=1584-backup.ckpt.model.spec.json"
 		res_change_mult: [16, 16, 1] // 4 3-7: 32-512
 		process_chunk_sizes: [[512, 512, 1], [256, 256, 1]]
 	}
-	"1280": {
+	"256": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/5_M3_M8_conv5_lr0.0001_equi0.5_post1.03_fmt0.8_cns_all/last.ckpt.static-1.13.1+cu117-model.jit"
 		res_change_mult: [32, 32, 1] // 4 3-7: 32-
-		process_chunk_sizes: [[512, 512, 1], [128, 128, 1]]
+		process_chunk_sizes: [[256, 256, 1], [64, 64, 1]]
 	}
-	"2560": {
+	"512": {
 		path: "gs://zetta-research-nico/training_artifacts/base_coarsener_cns/5_M4_M9_conv5_lr0.00002_equi0.5_post1.1_fmt0.8_cns_all/last.ckpt.model.spec.json"
 		res_change_mult: [32, 32, 1] // 4 3-7: 32-
-		process_chunk_sizes: [[512, 512, 1], [128, 128, 1]]
+		process_chunk_sizes: [[128, 128, 1], [32, 32, 1]]
 	}
 }
 
