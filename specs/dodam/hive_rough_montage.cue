@@ -4,10 +4,10 @@ worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-bloc
 worker_cluster_project: "zetta-research"
 worker_cluster_name:    "zutils-x3"
 worker_replicas:        2000
-local_test:             false
-debug:                  false
-//local_test: true
-//debug:      true
+//local_test:             false
+//debug:                  false
+local_test: true
+debug:      true
 target: {
 	"@type":          "compute_rough_montage_offsets"
 	path:             "~/stage_positions.csv"

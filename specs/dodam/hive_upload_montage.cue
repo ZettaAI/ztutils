@@ -1,6 +1,6 @@
 "@type":                "mazepa.execute_on_gcp_with_sqs"
 worker_cluster_region:  "us-east1"
-worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-20"
+worker_image:           "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-23"
 worker_cluster_project: "zetta-research"
 worker_cluster_name:    "zutils-x3"
 worker_replicas:        250
@@ -12,7 +12,7 @@ target: {
 	csv_path:           "./rough_montage.csv"
 	bucket:             "gs://ng_scratch_ranl_7/test_voxa/tiles/2022.10.01_Sample3_tilt-0/s000.01-2022.10.02-20.37.54/"
 	info_template_path: "gs://hive-tomography/pilot11-tiles"
-	base_path:          "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_26"
+	base_path:          "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_27"
 	//    "@type": "mazepa.sequential_flow"
 	//    stages: [
 	//     for res in [40, 80, 160, 320] {

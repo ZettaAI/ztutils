@@ -12,8 +12,8 @@ import ( "math"
 #ENCODED_PATH10: "\(#ENCODED_PATH_BASE)/(1,0)"
 #ENCODED_PATH11: "\(#ENCODED_PATH_BASE)/(1,1)"
 
-#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_24"
-#ENCODED_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_24"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_27"
+#ENCODED_PATH_BASE: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_27"
 
 //#IMG_PATH_BASE: "gs://dacey-human-retina-001-montaging/rough_aligned_final"
 #IMG_PATH00: "\(#IMG_PATH_BASE)/(0,0)"
@@ -25,7 +25,7 @@ import ( "math"
 
 #IMG_SIZE: [786432, 262144, 1]
 
-#FOLDER: "gs://hive-tomography/pilot11-montage/exp24c"
+#FOLDER: "gs://hive-tomography/pilot11-montage/exp27"
 
 #SKIP_ENCODE: true
 #SKIP_MISD:   true
@@ -101,7 +101,7 @@ import ( "math"
 {
 	"@type":               "mazepa.execute_on_gcp_with_sqs"
 	worker_cluster_region: "us-east1"
-	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-6"
+	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-23"
 	worker_resources: {
 		memory:           "18560Mi" // sized for n1-highmem-4
 		"nvidia.com/gpu": "1"

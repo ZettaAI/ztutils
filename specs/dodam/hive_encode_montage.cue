@@ -1,13 +1,13 @@
-#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_26"
-#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_cns_enc_26"
-#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_cns_enc_26"
+#IMG_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_27"
+#DST_PATH_BASE:     "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_27"
+#INTERMEDIARY_PATH: "gs://tmp_2w/hive-tomography/pilot11-tiles/rough_montaged_nocrop_enc_27"
 
 #IMG_RES: [1, 1, 1]
 
 #IMG_SIZE: [786432, 262144, 1]
 
-//#MODELS: #GENERAL_ENC_MODELS
-#MODELS: #CNS_ENC_MODELS
+#MODELS: #GENERAL_ENC_MODELS
+//#MODELS: #CNS_ENC_MODELS
 
 #OFFSETS: ["(0,0)", "(0,1)", "(1,0)", "(1,1)"]
 
@@ -49,7 +49,7 @@ if #TEST_LOCAL {
 #GCP_FLOW: {
 	"@type":               "mazepa.execute_on_gcp_with_sqs"
 	worker_cluster_region: "us-east1"
-	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-20"
+	worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-23"
 	worker_resources: {
 		memory:           "18560Mi" // sized for n1-highmem-4
 		"nvidia.com/gpu": "1"

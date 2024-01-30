@@ -1,6 +1,6 @@
 //#BASE_FOLDER: "gs://dacey-human-retina-001-montaging/test_tiles_8192full_64crop_6912offset"
 
-#BASE_FOLDER: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_26"
+#BASE_FOLDER: "gs://hive-tomography/pilot11-tiles/rough_montaged_nocrop_27"
 
 #BBOX: {
 	"@type": "BBox3D.from_coords"
@@ -40,13 +40,13 @@
 
 "@type":               "mazepa.execute_on_gcp_with_sqs"
 worker_cluster_region: "us-east1"
-worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-12"
+worker_image:          "us.gcr.io/zetta-research/zetta_utils:dodam-montage-blockmatch-hive-23"
 worker_resources: {
 	memory: "18560Mi" // sized for n1-highmem-4
 }
 worker_cluster_project: "zetta-research"
 worker_cluster_name:    "zutils-x3"
-worker_replicas:        500
+worker_replicas:        1000
 local_test:             false
 debug:                  false
 num_procs:              2
