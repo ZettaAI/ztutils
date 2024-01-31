@@ -20,6 +20,7 @@
 	resolution: [1, 1, 1]
 }
 
+#XY_COPY_RES: [4]
 #XY_ENC_RES: [8, 16, 32, 64, 128, 256, 512]
 
 #PROCESS_CROP_PAD: [16, 16, 0] // 16 pix was okay for 1um model
@@ -67,31 +68,54 @@ if #TEST_LOCAL {
 		"cuda":  1
 		"write": 2
 	}
+do_dryrun_estimation: false
 }
 #TOP_LEVEL_FLOW & {
 	target: {
 		"@type": "mazepa.concurrent_flow"
 		stages: [
-			for offset in #OFFSETS for xy in #XY_ENC_RES {
-				let model = #MODELS["\(xy)"]
-				let bbox_ = #BBOX
-				#ENC_FLOW_TMPL & {
-					bbox: bbox_
-					op: fn: model_path:  model.path
-					op: fn: ds_factor:   model.res_change_mult[0]
-					op: fn: tile_pad_in: model.res_change_mult[0] * #PROCESS_CROP_PAD[0]
-					op: fn: tile_size:   model.res_change_mult[0] * model.process_chunk_sizes[1][0]
-					op: res_change_mult: model.res_change_mult
-					op: crop_pad:        #PROCESS_CROP_PAD
-					op_kwargs: src: path: "\(#IMG_PATH_BASE)/\(offset)"
+//			for offset in #OFFSETS for xy in #XY_ENC_RES {
+//				let model = #MODELS["\(xy)"]
+//				let bbox_ = #BBOX
+//				#ENC_FLOW_TMPL & {
+//					bbox: bbox_
+//					op: fn: model_path:  model.path
+//					op: fn: ds_factor:   model.res_change_mult[0]
+//					op: fn: tile_pad_in: model.res_change_mult[0] * #PROCESS_CROP_PAD[0]
+//					op: fn: tile_size:   model.res_change_mult[0] * model.process_chunk_sizes[1][0]
+//					op: res_change_mult: model.res_change_mult
+//					op: crop_pad:        #PROCESS_CROP_PAD
+//					op_kwargs: src: path: "\(#IMG_PATH_BASE)/\(offset)"
+//					dst: path: "\(#DST_PATH_BASE)/\(offset)"
+//					processing_chunk_sizes: model.process_chunk_sizes
+//					processing_crop_pads: [[0, 0, 0], #PROCESS_CROP_PAD]
+//					dst_resolution: [xy, xy, #IMG_RES[2]]
+//				}
+//			},
+			for offset in #OFFSETS for xy in #XY_COPY_RES {
+                "@type": "build_subchunkable_apply_flow"
+                level_intermediaries_dirs: [#INTERMEDIARY_PATH, "file://."]
+					bbox: #BBOX
+                    fn: {
+                        "@type":    "lambda"
+                        lambda_str: "lambda src: torch.tensor(src - 128).type(torch.int8)"
+                    }
+                    fn_semaphores: ["cpu"]
+                    op_kwargs: {
+                        src: {
+                            "@type":      "build_cv_layer"
+                            path:         "\(#IMG_PATH_BASE)/\(offset)"
+                        }
+                        }
+                    dst: #DST_TMPL
 					dst: path: "\(#DST_PATH_BASE)/\(offset)"
-					processing_chunk_sizes: model.process_chunk_sizes
-					processing_crop_pads: [[0, 0, 0], #PROCESS_CROP_PAD]
+					processing_chunk_sizes: [[4096, 4096, 1],[2048, 2048, 1]]
+					processing_crop_pads: [[0, 0, 0], [0, 0, 0]]
 					dst_resolution: [xy, xy, #IMG_RES[2]]
-				}
-			},
+            }
 		]
 	}
+
 }
 
 #ENC_FLOW_TMPL: {
@@ -212,6 +236,9 @@ if #TEST_LOCAL {
 	}
 	info_add_scales: [
 		for xy in #XY_ENC_RES {
+			[xy, xy, #IMG_RES[2]]
+		},
+		for xy in #XY_COPY_RES {
 			[xy, xy, #IMG_RES[2]]
 		},
 	]
