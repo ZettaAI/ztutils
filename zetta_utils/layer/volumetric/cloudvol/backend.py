@@ -194,6 +194,7 @@ class CVBackend(VolumetricBackend):  # pylint: disable=too-few-public-methods
             _get_cv_cached(self.path, resolution=res, **self.cv_kwargs).cache.flush()
 
     def clear_cache(self) -> None:  # pragma: no cover
+        self.clear_disk_cache()
         _clear_cv_cache(self.path)
 
     def read(self, idx: VolumetricIndex) -> npt.NDArray:
